@@ -251,8 +251,14 @@ func handlePacket(conn connectors.MeshConnector, packet *pb.MeshPacket) {
 		if c == conn {
 			continue
 		}
+		if !c.IsConnected() {
+			logger.Warn().Str("connector", c.Name()).Msg("Skipping offline connector")
+			continue
+		}
 		if err := c.SendPacket(packet); err != nil {
-			logger.Err(err).Msg("Error relaying packet")
+			logger.Err(err).
+				Str("connector", c.Name()).
+				Msg("Error relaying packet")
 		}
 	}
 }
