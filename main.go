@@ -218,7 +218,7 @@ loopStart:
 
 func isDuplicatePacket(packet *pb.MeshPacket) bool {
 	if packet.Id == 0 {
-		return false
+		return true
 	}
 	cacheKey := (uint64(packet.From) << 32) | uint64(packet.Id)
 	return packetCache.Has(cacheKey)
